@@ -1,16 +1,13 @@
-import { IsIn } from "class-validator";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity()
+@Entity({name:'users'})
 export class User {
   
   @Column()
   @PrimaryGeneratedColumn('uuid')
   id:string
 
-  @Column('varchar',{
-    unique:true
-  })
+  @Column({unique:true})
   email:string
 
   @Column()
@@ -19,17 +16,35 @@ export class User {
   @Column()
   name:string
 
-  @Column()
+  @Column({name:'last_name'})
   lastName:string
 
-  @Column('varchar',{
-    default:'user'
-  })
-  @IsIn(['user','admin','super-admin'])
+  @Column({default:'user'})
   rol?:string
 
+  @Column()
+  address:string
+
+  @Column()
+  telephone:string
+
+  @CreateDateColumn({
+    name:'created_at',
+    type:'timestamptz',
+    default:()=>'CURRENT_TIMESTAMP'
+  })
+  createdAt:Date
+  
+  @UpdateDateColumn({
+    name:'updated_at',
+    type:'timestamptz',
+    default:()=>'CURRENT_TIMESTAMP'
+  })
+  updatedAt:Date
+
   @Column('bool',{
-    default:true
+    default:true,
+    name:'is_active'
   })
   isActive?:boolean
 

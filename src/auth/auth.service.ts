@@ -1,4 +1,4 @@
-import { Injectable,BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
@@ -6,6 +6,7 @@ import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HashAdapter } from './helpers/hash.adapter';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { CommonService } from '../common/common.service';
 
 
 @Injectable()
@@ -15,7 +16,8 @@ export class AuthService {
     @InjectRepository(User)
     private readonly  userRepository: Repository<User>,
     private readonly hashAdapter:HashAdapter,
-    private readonly jwtService:JwtService
+    private readonly jwtService:JwtService,
+    private readonly commonService:CommonService
   ){}
 
   async create(createUserDto: CreateUserDto) {
@@ -29,7 +31,7 @@ export class AuthService {
         token:this.getToken({ sub:user.id })
       };
     } catch (error) {
-      this.handleErrors(error);
+      this.commonService.handlerErrors(error);
     }
   }
 
@@ -42,13 +44,6 @@ export class AuthService {
 
   getToken(payload:JwtPayload):string{
    return this.jwtService.sign(payload)
-  }
-
-  handleErrors(error:any):never{
-    console.log(error);
-    if(error.code === '23505')
-      throw new BadRequestException(`${error.detail}`);
-    throw new InternalServerErrorException()
   }
 
 }

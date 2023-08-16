@@ -3,6 +3,7 @@ import { Repository } from "typeorm";
 import { User } from "../entities/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { HashAdapter } from "./hash.adapter";
+import { CommonService } from "../../common/common.service";
 
 @Injectable()
 export class AuthUserService{
@@ -11,6 +12,7 @@ export class AuthUserService{
     @InjectRepository(User)
     private readonly userRepository:Repository<User>,
     private readonly hashAdapter:HashAdapter,
+    private readonly commonService:CommonService
   ){}
   
   async validateUser(email:string, password:string){
@@ -18,7 +20,7 @@ export class AuthUserService{
     try {
       user = await this.userRepository.findOneBy({email});
     } catch (error) {
-      this.handleErrors(error)
+      this.commonService.handlerErrors(error);
     }
     if(!user) throw new UnauthorizedException();
     if(!user.isActive) throw new ForbiddenException();
@@ -28,10 +30,4 @@ export class AuthUserService{
     return rest;
   }
 
-  handleErrors(error:any):never{
-    console.log(error);
-    if(error.code === '23505')
-      throw new BadRequestException(`${error.detail}`);
-    throw new InternalServerErrorException();
-  }
 }

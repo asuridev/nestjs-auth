@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
@@ -25,7 +25,7 @@ export class AuthController {
   }
 
   @Get('test')
-  @Auth(ValidRoles.user)
+  @Auth(ValidRoles.admin)
   test(@GetUser() user:User){
     return user
   }

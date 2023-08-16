@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 
@@ -11,6 +11,7 @@ async function bootstrap() {
     })
   );
   app.setGlobalPrefix('api');
-  await app.listen(3000);
+  const port = process.env.SERVER_PORT || 3000
+  await app.listen(port);
 }
 bootstrap();
