@@ -3,6 +3,7 @@
 </p>
 Para ejecuatar las migraciones en el archivo database/migration.datasocurce.ts se
 encuentran las credenciales de conexion a la cli de typeORM.
+
 ## comando para generar las migraciones
 
 ```
