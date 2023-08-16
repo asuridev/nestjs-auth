@@ -3,14 +3,14 @@
 </p>
 Para ejecuatar las migraciones en el archivo database/migration.datasocurce.ts se
 encuentran las credenciales de conexion a la cli de typeORM.
-##comando para generar las migraciones
+## comando para generar las migraciones
 
 ```
 npm run migrations:generate ./src/database/migrations/<migration-name>
 
 ```
 
-##comandopara correr las migraciones
+## comando para correr las migraciones
 
 ```
 npm run migrations:run
